@@ -28,11 +28,14 @@ public class ChessGameGUI extends JFrame implements MouseListener, MouseMotionLi
     private final ChessGameControler chessGameControler;
     private boolean isFirst = true;
     private Component componentDrop;
+    private ChessGameMessageGUI messages;
 
     public ChessGameGUI(ChessGameControler chessGameControler) {
         this.chessGameControler = chessGameControler;
         Dimension boardSize = new Dimension(600, 600);
-        
+
+        messages = new ChessGameMessageGUI();
+
 
         //  Use a Layered Pane for this this application
         layeredPane = new JLayeredPane();
@@ -42,7 +45,6 @@ public class ChessGameGUI extends JFrame implements MouseListener, MouseMotionLi
         layeredPane.addMouseMotionListener(this);
 
         //Add a chess board to the Layered Pane
-
         chessBoard = new JPanel();
         layeredPane.add(chessBoard, JLayeredPane.DEFAULT_LAYER);
         chessBoard.setLayout(new GridLayout(8, 8));
@@ -153,6 +155,7 @@ public class ChessGameGUI extends JFrame implements MouseListener, MouseMotionLi
                 }
             }
             revalidate();
+            repaint();
             isFirst = false;
         }
         else {
@@ -180,6 +183,6 @@ public class ChessGameGUI extends JFrame implements MouseListener, MouseMotionLi
 
     private void displayMesages() {
         String message = chessGameControler.getMessage();
-        JOptionPane.showMessageDialog(null,message);
+        messages.addMessage(message);
     }
 }
