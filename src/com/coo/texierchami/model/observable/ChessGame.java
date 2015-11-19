@@ -41,12 +41,12 @@ public class ChessGame extends Observable implements ChessGames {
 
     @Override
     public String getMessage() {
-        return null;
+        return echiquier.getMessage();
     }
 
     @Override
     public Couleur getColorCurrentPlayer() {
-        return null;
+        return echiquier.getColorCurrentPlayer();
     }
 
     @Override

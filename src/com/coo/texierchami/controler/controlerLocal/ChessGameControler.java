@@ -23,7 +23,7 @@ public class ChessGameControler implements ChessGameControlers {
 
     @Override
     public String getMessage() {
-        return null;
+        return chessGame.getMessage();
     }
 
     @Override
@@ -33,6 +33,6 @@ public class ChessGameControler implements ChessGameControlers {
 
     @Override
     public Couleur getColorCurrentPlayer() {
-        return null;
+        return chessGame.getColorCurrentPlayer();
     }
 }
