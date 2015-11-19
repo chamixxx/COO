@@ -21,6 +21,6 @@ public class LauncherGUI {
         chessGameGUI.setResizable(true);
         chessGameGUI.setLocationRelativeTo( null );
         chessGameGUI.setVisible(true);
-        chessGame.notifyExterne();
+        chessGame.notifyObservers();
     }
 }

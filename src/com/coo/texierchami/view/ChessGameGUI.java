@@ -27,7 +27,7 @@ public class ChessGameGUI extends JFrame implements MouseListener, MouseMotionLi
     private Coord coordFinales;
     private final ChessGameControler chessGameControler;
     private boolean isFirst = true;
-    private Component componentDrag;
+    private Component componentDrop;
 
     public ChessGameGUI(ChessGameControler chessGameControler) {
         this.chessGameControler = chessGameControler;
@@ -93,28 +93,22 @@ public class ChessGameGUI extends JFrame implements MouseListener, MouseMotionLi
         if (chessPiece == null) return;
 
         chessPiece.setVisible(false);
-        componentDrag = chessBoard.findComponentAt(e.getX(), e.getY());
+        componentDrop = chessBoard.findComponentAt(e.getX(), e.getY());
 
         int indexComponent;
-        if (componentDrag instanceof JLabel) {
-            indexComponent = Util.getComponentIndex(componentDrag.getParent());
+        if (componentDrop instanceof JLabel) {
+            indexComponent = Util.getComponentIndex(componentDrop.getParent());
         }
         else {
-            indexComponent = Util.getComponentIndex(componentDrag);
+            indexComponent = Util.getComponentIndex(componentDrop);
         }
 
         int x = indexComponent % 8;
         int y = indexComponent / 8;
         coordFinales = new Coord(x, y);
 
-        System.out.print("init: " + coordInitiales + "     finale: " + coordFinales);
-        boolean isMoveOk = chessGameControler.move(coordInitiales, coordFinales);
-        if (!isMoveOk) {
-            Component panel = chessBoard.getComponent(coordInitiales.x + coordInitiales.y * 8);
-            Container parent = (Container)panel;
-            parent.add( chessPiece );
-            chessPiece.setVisible(true);
-        }
+        System.out.print("init: " + coordInitiales + "     finale: " + coordFinales + "\n");
+        chessGameControler.move(coordInitiales, coordFinales);
     }
 
     @Override
@@ -140,10 +134,11 @@ public class ChessGameGUI extends JFrame implements MouseListener, MouseMotionLi
 
     @Override
     public void update(Observable o, Object arg) {
-        List<PieceIHM> pieceIHMList = (List<PieceIHM>) arg;
-        List<Coord> coordonees;
+
 
         if (isFirst) {
+            List<PieceIHM> pieceIHMList = (List<PieceIHM>) arg;
+            List<Coord> coordonees;
             for (PieceIHM piece : pieceIHMList) {
                 coordonees = piece.getList();
                 for (Coord coord : coordonees) {
@@ -160,16 +155,23 @@ public class ChessGameGUI extends JFrame implements MouseListener, MouseMotionLi
             isFirst = false;
         }
         else {
-            if (componentDrag instanceof JLabel){
-                Container parent = componentDrag.getParent();
-                parent.remove(0);
-                parent.add( chessPiece );
+            boolean isMoveOk = (boolean) arg;
+            if (isMoveOk) {
+                if (componentDrop instanceof JLabel){
+                    Container parent = componentDrop.getParent();
+                    parent.remove(0);
+                    parent.add( chessPiece );
+                }
+                else {
+                    Container parent = (Container) componentDrop;
+                    parent.add( chessPiece );
+                }
             }
             else {
-                Container parent = (Container)componentDrag;
+                Component panel = chessBoard.getComponent(coordInitiales.x + coordInitiales.y * 8);
+                Container parent = (Container)panel;
                 parent.add( chessPiece );
             }
-
             chessPiece.setVisible(true);
         }
     }

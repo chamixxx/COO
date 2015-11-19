@@ -20,13 +20,15 @@ public class ChessGame extends Observable implements ChessGames {
 
         Boolean isMoveOk = echiquier.isMoveOk(xInit, yInit, xFinal, yFinal);
         if (!isMoveOk) {
-            System.out.print("Déplacement non autorisé");
+            System.out.print("Déplacement non autorisé \n");
+            setChanged();
+            notifyObservers(isMoveOk);
             return false;
         }
         else {
             echiquier.move(xInit, yInit, xFinal, yFinal);
             setChanged();
-            notifyObservers(echiquier.getPiecesIHM());
+            notifyObservers(isMoveOk);
             echiquier.switchJoueur();
             return true;
         }
@@ -47,7 +49,8 @@ public class ChessGame extends Observable implements ChessGames {
         return null;
     }
 
-    public void notifyExterne () {
+    @Override
+    public void notifyObservers () {
         setChanged();
         notifyObservers(echiquier.getPiecesIHM());
     }
