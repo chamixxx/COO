@@ -16,7 +16,10 @@ public class ChessGameMessageGUI extends JFrame {
         messageArea.setVisible(true);
         messageArea.setText("Le Jeu commence :  \n\n");
         messageArea.setEditable(false);
+        messageArea.setWrapStyleWord(true);
+        messageArea.setLineWrap(true);
         JScrollPane scrollPane = new JScrollPane(messageArea);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         getContentPane().add(scrollPane,BorderLayout.CENTER);
         pack();
         setVisible(true);
