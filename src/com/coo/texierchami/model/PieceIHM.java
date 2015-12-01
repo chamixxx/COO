@@ -1,5 +1,6 @@
 package com.coo.texierchami.model;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * en vue d'une utilisation par une IHM
  * 
  */
-public  class PieceIHM {
+public  class PieceIHM implements Serializable{
 	 
 	String type;
 	Couleur couleur;

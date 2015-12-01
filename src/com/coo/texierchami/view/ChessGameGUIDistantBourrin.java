@@ -1,5 +1,6 @@
 package com.coo.texierchami.view;
 
+import com.coo.texierchami.controler.controlerDistant.ChessGameControlerClient;
 import com.coo.texierchami.controler.controlerLocal.ChessGameControler;
 import com.coo.texierchami.model.Coord;
 import com.coo.texierchami.model.PieceIHM;
@@ -8,16 +9,16 @@ import com.coo.texierchami.tools.Util;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.List;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.*;
-import java.util.List;
 
 /**
- * Created by othmanechamikhazraji on 13/11/15.
+ * Created by othmanechamikhazraji on 25/11/15.
  */
-public class ChessGameGUI extends JFrame implements MouseListener, MouseMotionListener, Observer {
+public class ChessGameGUIDistantBourrin extends JFrame implements MouseListener, MouseMotionListener, Observer {
     private JLayeredPane layeredPane;
     private JPanel chessBoard;
     private JLabel chessPiece;
@@ -25,25 +26,26 @@ public class ChessGameGUI extends JFrame implements MouseListener, MouseMotionLi
     private int yAdjustment;
     private Coord coordInitiales;
     private Coord coordFinales;
-    private final ChessGameControler chessGameControler;
+    private final ChessGameControlerClient chessGameControler;
     private boolean isFirst = true;
     private Component componentDrop;
     private ChessGameMessageGUI messages;
 
-    public ChessGameGUI(ChessGameControler chessGameControler) {
+    public ChessGameGUIDistantBourrin(ChessGameControlerClient chessGameControler) {
         this.chessGameControler = chessGameControler;
         Dimension boardSize = new Dimension(600, 600);
 
         messages = new ChessGameMessageGUI();
 
-        // Use a Layered Pane for this this application
+
+        //  Use a Layered Pane for this this application
         layeredPane = new JLayeredPane();
         getContentPane().add(layeredPane);
         layeredPane.setPreferredSize(boardSize);
         layeredPane.addMouseListener(this);
         layeredPane.addMouseMotionListener(this);
 
-        // Add a chess board to the Layered Pane
+        //Add a chess board to the Layered Pane
         chessBoard = new JPanel();
         layeredPane.add(chessBoard, JLayeredPane.DEFAULT_LAYER);
         chessBoard.setLayout(new GridLayout(8, 8));
@@ -94,14 +96,13 @@ public class ChessGameGUI extends JFrame implements MouseListener, MouseMotionLi
     public void mouseReleased(MouseEvent e) {
         if (chessPiece == null) return;
 
-        chessPiece.setVisible(false);
+        //chessPiece.setVisible(false);
         componentDrop = chessBoard.findComponentAt(e.getX(), e.getY());
 
         int indexComponent;
         if (componentDrop instanceof JLabel) {
             indexComponent = Util.getComponentIndex(componentDrop.getParent());
-        }
-        else {
+        } else {
             indexComponent = Util.getComponentIndex(componentDrop);
         }
 
@@ -137,46 +138,28 @@ public class ChessGameGUI extends JFrame implements MouseListener, MouseMotionLi
     @Override
     public void update(Observable o, Object arg) {
 
+        if (chessPiece != null) {
+            layeredPane.remove(chessPiece);
+        }
 
-        if (isFirst) {
-            List<PieceIHM> pieceIHMList = (List<PieceIHM>) arg;
-            List<Coord> coordonees;
-            for (PieceIHM piece : pieceIHMList) {
-                coordonees = piece.getList();
-                for (Coord coord : coordonees) {
-                    int position = coord.x + coord.y * 8;
-                    JLabel pieceGUI = new JLabel(new ImageIcon(ChessImageProvider.getImageFile(piece.getTypePiece(), piece.getCouleur())));
-                    JPanel panel = (JPanel) chessBoard.getComponent(position);
-                    if (panel.getComponentCount() != 0) {
-                       panel.remove(0);
-                    }
-                    panel.add(pieceGUI);
-                }
-            }
-            revalidate();
-            repaint();
-            isFirst = false;
+        for (int i=0; i<64 ; i++) {
+            JPanel panel = (JPanel) chessBoard.getComponent(i);
+            panel.removeAll();
         }
-        else {
-            boolean isMoveOk = (boolean) arg;
-            if (isMoveOk) {
-                if (componentDrop instanceof JLabel){
-                    Container parent = componentDrop.getParent();
-                    parent.remove(0);
-                    parent.add( chessPiece );
-                }
-                else {
-                    Container parent = (Container) componentDrop;
-                    parent.add( chessPiece );
-                }
+
+        java.util.List<PieceIHM> pieceIHMList = (java.util.List<PieceIHM>) arg;
+        java.util.List<Coord> coordonees;
+        for (PieceIHM piece : pieceIHMList) {
+            coordonees = piece.getList();
+            for (Coord coord : coordonees) {
+                int position = coord.x + coord.y * 8;
+                JLabel pieceGUI = new JLabel(new ImageIcon(ChessImageProvider.getImageFile(piece.getTypePiece(), piece.getCouleur())));
+                JPanel panel = (JPanel) chessBoard.getComponent(position);
+                panel.add(pieceGUI);
             }
-            else {
-                Component panel = chessBoard.getComponent(coordInitiales.x + coordInitiales.y * 8);
-                Container parent = (Container)panel;
-                parent.add( chessPiece );
-            }
-            chessPiece.setVisible(true);
         }
+        revalidate();
+        repaint();
         displayMesages();
     }
 

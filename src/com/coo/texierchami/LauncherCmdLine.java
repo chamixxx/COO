@@ -1,7 +1,7 @@
 package com.coo.texierchami;
 
 import com.coo.texierchami.controler.controlerLocal.ChessGameControler;
-import com.coo.texierchami.model.observable.ChessGame;
+import com.coo.texierchami.model.observable.ChessGameLocal;
 import com.coo.texierchami.view.ChessGameCmdLine;
 
 
@@ -13,11 +13,11 @@ public class LauncherCmdLine {
 	
 	public static void main(String[] args) {		
 		
-		ChessGame chessGame;
+		ChessGameLocal chessGameLocal;
 		ChessGameControler chessGameControler;
 		
-		chessGame = new ChessGame();	
-		chessGameControler = new ChessGameControler(chessGame);
+		chessGameLocal = new ChessGameLocal();
+		chessGameControler = new ChessGameControler(chessGameLocal);
 		
 		new ChessGameCmdLine(chessGameControler);
 	}

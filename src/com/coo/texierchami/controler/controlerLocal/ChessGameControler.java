@@ -3,27 +3,27 @@ package com.coo.texierchami.controler.controlerLocal;
 import com.coo.texierchami.controler.ChessGameControlers;
 import com.coo.texierchami.model.Coord;
 import com.coo.texierchami.model.Couleur;
-import com.coo.texierchami.model.observable.ChessGame;
+import com.coo.texierchami.model.observable.ChessGameLocal;
 
 /**
  * Created by othmanechamikhazraji on 13/11/15.
  */
 public class ChessGameControler implements ChessGameControlers {
-    private ChessGame chessGame;
+    private ChessGameLocal chessGameLocal;
 
-    public ChessGameControler(ChessGame chessGame) {
-        this.chessGame = chessGame;
+    public ChessGameControler(ChessGameLocal chessGameLocal) {
+        this.chessGameLocal = chessGameLocal;
     }
 
     @Override
     public boolean move(Coord initCoord, Coord finalCoord) {
-        boolean hasMoved = chessGame.move(initCoord.x, initCoord.y, finalCoord.x, finalCoord.y);
+        boolean hasMoved = chessGameLocal.move(initCoord.x, initCoord.y, finalCoord.x, finalCoord.y);
         return hasMoved;
     }
 
     @Override
     public String getMessage() {
-        return chessGame.getMessage();
+        return chessGameLocal.getMessage();
     }
 
     @Override
@@ -33,6 +33,6 @@ public class ChessGameControler implements ChessGameControlers {
 
     @Override
     public Couleur getColorCurrentPlayer() {
-        return chessGame.getColorCurrentPlayer();
+        return chessGameLocal.getColorCurrentPlayer();
     }
 }

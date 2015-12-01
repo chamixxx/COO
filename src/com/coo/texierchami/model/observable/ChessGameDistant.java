@@ -6,12 +6,12 @@ import com.coo.texierchami.model.Echiquier;
 import java.util.Observable;
 
 /**
- * Created by othmanechamikhazraji on 13/11/15.
+ * Created by othmanechamikhazraji on 25/11/15.
  */
-public class ChessGame extends Observable implements ChessGames {
+public class ChessGameDistant extends Observable implements ChessGames{
     private Echiquier echiquier;
 
-    public ChessGame() {
+    public ChessGameDistant() {
         echiquier = new Echiquier();
     }
 
@@ -22,13 +22,13 @@ public class ChessGame extends Observable implements ChessGames {
         if (!isMoveOk) {
             System.out.print("Déplacement non autorisé \n");
             setChanged();
-            notifyObservers(isMoveOk);
+            notifyObservers();
             return false;
         }
         else {
             echiquier.move(xInit, yInit, xFinal, yFinal);
             setChanged();
-            notifyObservers(isMoveOk);
+            notifyObservers();
             echiquier.switchJoueur();
             return true;
         }
