@@ -3,6 +3,7 @@ package com.coo.texierchami.view;
 import com.coo.texierchami.controler.controlerDistant.ChessGameControlerClient;
 import com.coo.texierchami.controler.controlerLocal.ChessGameControler;
 import com.coo.texierchami.model.Coord;
+import com.coo.texierchami.model.MessageModelSocket;
 import com.coo.texierchami.model.PieceIHM;
 import com.coo.texierchami.tools.ChessImageProvider;
 import com.coo.texierchami.tools.Util;
@@ -36,7 +37,6 @@ public class ChessGameGUIDistantBourrin extends JFrame implements MouseListener,
         Dimension boardSize = new Dimension(600, 600);
 
         messages = new ChessGameMessageGUI();
-
 
         //  Use a Layered Pane for this this application
         layeredPane = new JLayeredPane();
@@ -147,7 +147,9 @@ public class ChessGameGUIDistantBourrin extends JFrame implements MouseListener,
             panel.removeAll();
         }
 
-        java.util.List<PieceIHM> pieceIHMList = (java.util.List<PieceIHM>) arg;
+        MessageModelSocket messageModelSocket = (MessageModelSocket) arg;
+
+        java.util.List<PieceIHM> pieceIHMList = messageModelSocket.getPieceIHMList();
         java.util.List<Coord> coordonees;
         for (PieceIHM piece : pieceIHMList) {
             coordonees = piece.getList();
@@ -160,11 +162,11 @@ public class ChessGameGUIDistantBourrin extends JFrame implements MouseListener,
         }
         revalidate();
         repaint();
-        displayMesages();
+        displayMesages(messageModelSocket.getMessage());
     }
 
-    private void displayMesages() {
-        String message = chessGameControler.getMessage();
+    private void displayMesages(String message) {
+
         messages.addMessage(message);
     }
 }

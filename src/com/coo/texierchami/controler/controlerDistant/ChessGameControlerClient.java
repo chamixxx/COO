@@ -4,6 +4,7 @@ import com.coo.texierchami.connexion.CommunicationClient;
 import com.coo.texierchami.controler.ChessGameControlers;
 import com.coo.texierchami.model.Coord;
 import com.coo.texierchami.model.Couleur;
+import com.coo.texierchami.model.MessageModelSocket;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -18,7 +19,9 @@ public class ChessGameControlerClient extends Observable implements ChessGameCon
 
     private CommunicationClient communicationClient;
     private Thread reception;
-    private Object listPieceObject;
+    private Object messageModelSocket;
+
+
 
 
     public ChessGameControlerClient(int port) {
@@ -57,11 +60,11 @@ public class ChessGameControlerClient extends Observable implements ChessGameCon
         while (true) {
             try {
                 Thread.sleep(500);
-                listPieceObject = communicationClient.getObjectFromSocket();
-                if (listPieceObject != null) {
+                messageModelSocket = communicationClient.getObjectFromSocket();
+                if (messageModelSocket != null) {
                     System.out.print("jai recut \n");
                     setChanged();
-                    notifyObservers(listPieceObject);
+                    notifyObservers(messageModelSocket);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();

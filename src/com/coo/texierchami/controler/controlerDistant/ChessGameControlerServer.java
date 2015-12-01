@@ -4,6 +4,8 @@ import com.coo.texierchami.connexion.CommunicationServer;
 import com.coo.texierchami.controler.ChessGameControlers;
 import com.coo.texierchami.model.Coord;
 import com.coo.texierchami.model.Couleur;
+import com.coo.texierchami.model.MessageModelSocket;
+import com.coo.texierchami.model.PieceIHM;
 import com.coo.texierchami.model.observable.ChessGameDistant;
 
 import java.util.List;
@@ -20,6 +22,8 @@ public class ChessGameControlerServer implements ChessGameControlers, Observer, 
 
     private Thread reception, connexion;
     private Object coordsObject;
+
+    private MessageModelSocket messageModelSocket;
 
     public ChessGameControlerServer(ChessGameDistant chessGameDistant) {
         this.chessGameDistant = chessGameDistant;
@@ -38,7 +42,7 @@ public class ChessGameControlerServer implements ChessGameControlers, Observer, 
 
     @Override
     public String getMessage() {
-        return null;
+        return chessGameDistant.getMessage();
     }
 
     @Override
@@ -54,7 +58,10 @@ public class ChessGameControlerServer implements ChessGameControlers, Observer, 
     @Override
     public void update(Observable o, Object arg) {
         System.out.print("jupdate");
-        communicationServerClient.write(arg);
+        String message = getMessage();
+
+        messageModelSocket = new MessageModelSocket((List<PieceIHM>) arg,message);
+        communicationServerClient.write(messageModelSocket);
     }
 
     @Override

@@ -11,17 +11,22 @@ import javax.swing.*;
  */
 public class LauncherClient {
     public static void main(String[] args) {
-        ChessGameControlerClient chessGameControlerClient;
-        chessGameControlerClient = new ChessGameControlerClient(9300);
-        ChessGameGUIDistantBourrin chessGameGUIDistantBourrin =
-                new ChessGameGUIDistantBourrin(chessGameControlerClient);
-        chessGameControlerClient.addObserver(chessGameGUIDistantBourrin);
-        chessGameGUIDistantBourrin.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        chessGameGUIDistantBourrin.pack();
-        chessGameGUIDistantBourrin.setResizable(true);
-        chessGameGUIDistantBourrin.setLocationRelativeTo( null );
-        chessGameGUIDistantBourrin.setVisible(true);
-        chessGameControlerClient.notifyObservers();
+
+
+        for (int i=0;i<2;i++) {
+            int port = 9200 + 100*i;
+            ChessGameControlerClient chessGameControlerClient;
+            chessGameControlerClient = new ChessGameControlerClient(port);
+            ChessGameGUIDistantBourrin chessGameGUIDistantBourrin =
+                    new ChessGameGUIDistantBourrin(chessGameControlerClient);
+            chessGameControlerClient.addObserver(chessGameGUIDistantBourrin);
+            chessGameGUIDistantBourrin.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            chessGameGUIDistantBourrin.pack();
+            chessGameGUIDistantBourrin.setResizable(true);
+            chessGameGUIDistantBourrin.setLocationRelativeTo( null );
+            chessGameGUIDistantBourrin.setVisible(true);
+            chessGameControlerClient.notifyObservers();
+        }
 
     }
 }
